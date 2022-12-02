@@ -3,24 +3,23 @@ FROM python:3.9
 ENV VIRTUAL_ENV=/venv
 ENV XAPIAN_VERSION=1.4.20
 
-RUN apt-get update;
-RUN apt-get install -y --no-install-recommends \
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
     build-essential \
     python3-dev \
     tesseract-ocr \
     tesseract-ocr-deu \
     imagemagick \
-    gcc
-
-RUN python -m venv /venv
+    gcc \
+    && python -m venv /venv
 
 ENV PATH="/venv/bin:$PATH"
 
-RUN pip install sphinx
-
-# Compile & Install Xapian
 WORKDIR /tmp/
-RUN mkdir -p /tmp/src\
+
+RUN pip install sphinx \
+    ## Compile & Install Xapian
+    && mkdir -p /tmp/src\
     # build xapian-core
     && curl -SL https://oligarchy.co.uk/xapian/${XAPIAN_VERSION}/xapian-core-${XAPIAN_VERSION}.tar.xz \
     | tar -xJC /tmp/src \
