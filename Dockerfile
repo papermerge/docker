@@ -11,6 +11,7 @@ RUN apt-get update \
     tesseract-ocr-deu \
     imagemagick \
     gcc \
+    && rm -rf /var/lib/apt/lists/* \
     && python -m venv /venv
 
 ENV PATH="/venv/bin:$PATH"

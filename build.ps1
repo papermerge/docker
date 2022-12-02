@@ -1,1 +1,0 @@
-docker build -f ./Dockerfile -t papermerge/base-image:latest .
