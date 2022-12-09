@@ -62,7 +62,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
-          repository: papermerge/docker
+          repository: papermerge/base
 
   amd64:
     name: amd64
@@ -94,4 +94,4 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
-          repository: papermerge/docker
+          repository: papermerge/base
