@@ -20,7 +20,7 @@ on:
         description: 'Pubilsh on ghcr.io'
         type: boolean
         required: true
-        default: true
+        default: false
 
 jobs:
 

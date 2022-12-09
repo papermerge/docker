@@ -1,4 +1,4 @@
-FROM python:3.9
+FROM python:3.10
 
 ENV VIRTUAL_ENV=/venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
