@@ -49,9 +49,16 @@ jobs:
         uses: docker/build-push-action@v3.2.0
         with:
           push: true
-          tags: papermerge/base:${{ inputs.VERSION }}
+          tags: papermerge/base:latest,papermerge/base:${{ inputs.VERSION }}
           file: Dockerfile
           platforms: linux/amd64,linux/arm64
+
+      - name: Docker Hub Description
+        uses: peter-evans/dockerhub-description@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          repository: papermerge/base
 
   amd64:
     name: amd64
@@ -76,3 +83,10 @@ jobs:
           push: true
           tags: papermerge/base:latest,papermerge/base:${{ inputs.VERSION }}
           file: Dockerfile
+
+      - name: Docker Hub Description
+        uses: peter-evans/dockerhub-description@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          repository: papermerge/base
