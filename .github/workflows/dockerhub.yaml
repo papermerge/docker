@@ -1,3 +1,5 @@
+name: Dockerhub
+
 on:
   workflow_dispatch:
     inputs:
@@ -44,7 +46,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v3.2.0
         with:
           push: true
           tags: papermerge/base:${{ inputs.VERSION }}
@@ -69,7 +71,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build
-        uses: docker/build-push-action@v3.2
+        uses: docker/build-push-action@v3.2.0
         with:
           push: true
           tags: papermerge/base:latest,papermerge/base:${{ inputs.VERSION }}
