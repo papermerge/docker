@@ -29,7 +29,7 @@ jobs:
   arm64-amd64:
     name: arm64/amd64
     runs-on: ubuntu-latest
-    if: ${{ inputs.INCLUDE_ARM64_PLATFORM == 'true' }}
+    if: ${{ inputs.INCLUDE_ARM64_PLATFORM }}
     steps:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -54,7 +54,7 @@ jobs:
   amd64:
     name: amd64
     runs-on: ubuntu-latest
-    if: ${{ inputs.INCLUDE_ARM64_PLATFORM == 'false' }}
+    if: ${{ !inputs.INCLUDE_ARM64_PLATFORM }}
     steps:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
