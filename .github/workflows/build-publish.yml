@@ -1,7 +1,26 @@
-name: Build/Pub Image
+name: Build Docker Image
 
-on: [workflow_dispatch]
-
+on:
+  workflow_dispatch:
+    inputs:
+      VERSION:
+        required: true
+        type: string
+      INCLUDE_ARM64_PLATFORM:
+        description: 'Also build for arm64 (dockerhub only)'
+        type: boolean
+        required: true
+        default: true
+      PUBLISH_ON_GHCR:
+        description: 'Pubilsh on ghcr.io'
+        type: boolean
+        required: true
+        default: true
+      PUBLISH_ON_DOCKERHUB:
+        description: 'Pubilsh on Dockehub'
+        type: boolean
+        required: true
+        default: true
 
 jobs:
   build-and-push-image-to-docker-hub:
@@ -21,10 +40,19 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push
+      - name: Dockerhub/amd64/arm64
         uses: docker/build-push-action@v3
+        if: ${{ github.event.inputs.PUBLISH_ON_DOCKERHUB && github.event.inputs.INCLUDE_ARM64_PLATFORM }}
         with:
           push: true
-          tags: papermerge/base
+          tags: papermerge/base:${{ inputs.VERSION }}
           file: Dockerfile
           platforms: linux/amd64,linux/arm64
+
+      - name: Dockerhub/amd64
+        uses: docker/build-push-action@v3
+        if: ${{ github.event.inputs.PUBLISH_ON_DOCKERHUB && !github.event.inputs.INCLUDE_ARM64_PLATFORM }}
+        with:
+          push: true
+          tags: papermerge/base:${{ inputs.VERSION }}
+          file: Dockerfile
