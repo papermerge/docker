@@ -23,23 +23,25 @@ on:
         default: true
 
 jobs:
-  dockerhub:
-    name: DockerHub
+  build-and-publish:
+    name: Build and Publish
     runs-on: ubuntu-latest
-    if: ${{ github.event.inputs.PUBLISH_ON_DOCKERHUB == 'true' }}
-    uses: ./.github/workflows/dockerhub.yaml
-    secrets:
-      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_USERNAME }}
-    with:
-      VERSION: ${{ input.VERSION }}
-      INCLUDE_ARM64_PLATFORM: ${{ input.INCLUDE_ARM64_PLATFORM }}
-  ghcr:
-    name: ghcr
-    runs-on: ubuntu-latest
-    if: ${{ github.event.inputs.PUBLISH_ON_GHCR == 'true' }}
-    uses: ./.github/workflows/ghcr.yaml
-    secrets:
-      MY_GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}    
-    with:
-      VERSION: ${{ input.VERSION }}
+  steps:
+    dockerhub:
+      name: DockerHub
+      if: ${{ github.event.inputs.PUBLISH_ON_DOCKERHUB == 'true' }}
+      uses: ./.github/workflows/dockerhub.yaml
+      secrets:
+        DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+        DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_USERNAME }}
+      with:
+        VERSION: ${{ input.VERSION }}
+        INCLUDE_ARM64_PLATFORM: ${{ input.INCLUDE_ARM64_PLATFORM }}
+    ghcr:
+      name: ghcr
+      if: ${{ github.event.inputs.PUBLISH_ON_GHCR == 'true' }}
+      uses: ./.github/workflows/ghcr.yaml
+      secrets:
+        MY_GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        VERSION: ${{ input.VERSION }}
