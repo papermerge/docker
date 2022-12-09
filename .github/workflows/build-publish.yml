@@ -33,7 +33,7 @@ jobs:
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_USERNAME }}
     with:
       VERSION: ${{ github.event.inputs.VERSION }}
-      INCLUDE_ARM64_PLATFORM: ${{ github.event.inputs.INCLUDE_ARM64_PLATFORM }}
+      INCLUDE_ARM64_PLATFORM: ${{ github.event.inputs.INCLUDE_ARM64_PLATFORM == 'true' }}
 
   ghcr:
     name: Ghcr
