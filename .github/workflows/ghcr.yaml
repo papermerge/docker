@@ -1,4 +1,4 @@
-name: Publish to ghcr.io
+name: ghcr.io
 
 on:
   workflow_dispatch:
