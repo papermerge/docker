@@ -30,7 +30,7 @@ jobs:
     uses: ./.github/workflows/dockerhub.yaml
     secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
     with:
       VERSION: ${{ github.event.inputs.VERSION }}
       INCLUDE_ARM64_PLATFORM: ${{ github.event.inputs.INCLUDE_ARM64_PLATFORM == 'true' }}
