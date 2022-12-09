@@ -26,20 +26,20 @@ jobs:
 
   dockerhub:
     name: Build and Publish
-    if: ${{ github.event.inputs.PUBLISH_ON_DOCKERHUB == 'true' }}
+    if: ${{ inputs.PUBLISH_ON_DOCKERHUB == 'true' }}
     uses: ./.github/workflows/dockerhub.yaml
     secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_USERNAME }}
     with:
-      VERSION: ${{ input.VERSION }}
-      INCLUDE_ARM64_PLATFORM: ${{ input.INCLUDE_ARM64_PLATFORM }}
+      VERSION: ${{ inputs.VERSION }}
+      INCLUDE_ARM64_PLATFORM: ${{ inputs.INCLUDE_ARM64_PLATFORM }}
 
   ghcr:
     name: Ghcr
-    if: ${{ github.event.inputs.PUBLISH_ON_GHCR == 'true' }}
+    if: ${{ inputs.PUBLISH_ON_GHCR == 'true' }}
     uses: ./.github/workflows/ghcr.yaml
     secrets:
       MY_GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     with:
-      VERSION: ${{ input.VERSION }}
+      VERSION: ${{ inputs.VERSION }}
