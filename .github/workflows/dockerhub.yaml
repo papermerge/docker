@@ -69,8 +69,8 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v3.2
         with:
           push: true
-          tags: papermerge/base:${{ inputs.VERSION }}
+          tags: papermerge/base:latest,papermerge/base:${{ inputs.VERSION }}
           file: Dockerfile

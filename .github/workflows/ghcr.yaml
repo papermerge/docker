@@ -32,5 +32,5 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: papermerge/base:${{ inputs.VERSION }}, papermerge/base:latest
+          tags: papermerge/base:${{ inputs.VERSION }},papermerge/base:latest
           file: Dockerfile
