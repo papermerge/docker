@@ -17,6 +17,8 @@ on:
         required: true
       DOCKERHUB_TOKEN:
         required: true
+      DOCKERHUB_PASSWORD:
+        required: true
     inputs:
       VERSION:
         required: true
@@ -59,7 +61,7 @@ jobs:
         uses: peter-evans/dockerhub-description@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
           repository: papermerge/docker
 
   amd64:
@@ -91,5 +93,5 @@ jobs:
         uses: peter-evans/dockerhub-description@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
           repository: papermerge/docker

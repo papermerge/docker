@@ -31,6 +31,7 @@ jobs:
     secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+      DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
     with:
       VERSION: ${{ github.event.inputs.VERSION }}
       INCLUDE_ARM64_PLATFORM: ${{ github.event.inputs.INCLUDE_ARM64_PLATFORM == 'true' }}
