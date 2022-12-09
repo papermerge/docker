@@ -1,4 +1,4 @@
-name: Build Docker Image
+name: Build & Publish
 
 on:
   workflow_dispatch:
@@ -6,8 +6,13 @@ on:
       VERSION:
         required: true
         type: string
+      PUBLISH_ON_DOCKERHUB:
+        description: 'Pubilsh on DockeHub'
+        type: boolean
+        required: true
+        default: true
       INCLUDE_ARM64_PLATFORM:
-        description: 'Also build for arm64 (dockerhub only)'
+        description: 'Also build for arm64 (DockerHub only)'
         type: boolean
         required: true
         default: true
@@ -16,16 +21,12 @@ on:
         type: boolean
         required: true
         default: true
-      PUBLISH_ON_DOCKERHUB:
-        description: 'Pubilsh on Dockehub'
-        type: boolean
-        required: true
-        default: true
 
 jobs:
-  build-and-push-image-to-docker-hub:
-    name: Build/Pub to Dockerhub
+  dockerhub-arm64-amd64:
+    name: DockerHub/arm64/amd64
     runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.PUBLISH_ON_DOCKERHUB == 'true' && github.event.inputs.INCLUDE_ARM64_PLATFORM == 'true' }}
     steps:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -33,6 +34,30 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          tags: papermerge/base:${{ inputs.VERSION }}
+          file: Dockerfile
+          platforms: linux/amd64,linux/arm64
+
+  dockerhub-amd64:
+    name: DockerHub/amd64
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.PUBLISH_ON_DOCKERHUB == 'true' && github.event.inputs.INCLUDE_ARM64_PLATFORM == 'false' }}
+    steps:
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
       - name: Login to DockerHub
         uses: docker/login-action@v2
@@ -40,18 +65,8 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Dockerhub/amd64/arm64
+      - name: Build
         uses: docker/build-push-action@v3
-        if: ${{ github.event.inputs.PUBLISH_ON_DOCKERHUB && github.event.inputs.INCLUDE_ARM64_PLATFORM }}
-        with:
-          push: true
-          tags: papermerge/base:${{ inputs.VERSION }}
-          file: Dockerfile
-          platforms: linux/amd64,linux/arm64
-
-      - name: Dockerhub/amd64
-        uses: docker/build-push-action@v3
-        if: ${{ github.event.inputs.PUBLISH_ON_DOCKERHUB && !github.event.inputs.INCLUDE_ARM64_PLATFORM }}
         with:
           push: true
           tags: papermerge/base:${{ inputs.VERSION }}
