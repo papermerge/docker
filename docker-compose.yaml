@@ -2,7 +2,7 @@ version: '3.7'
 # Any top-level key starting with x- in a Docker Compose file will be
 # ignored
 x-backend: &common  # yaml anchor definition
-  image: papermerge:2.1.8
+  image: papermerge/papermerge:2.1.8
   volumes:
     - media_root:/app/media
   environment:

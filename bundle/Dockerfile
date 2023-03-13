@@ -12,7 +12,7 @@ COPY common/nginx.conf /etc/nginx/
 COPY common/papermerge.toml ./papermerge.toml
 COPY common/logging.yaml ./logging.yaml
 
-COPY papermerge/supervisord.conf /etc/
+COPY bundle/supervisord.conf /etc/
 
 RUN chmod +x /run.bash
 
