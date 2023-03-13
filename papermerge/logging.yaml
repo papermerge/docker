@@ -1,0 +1,25 @@
+version: 1
+disable_existing_loggers: false
+
+formatters:
+  verbose:
+    format: '%(levelname)s %(asctime)s %(module)s %(message)s'
+
+handlers:
+  console:
+    level: INFO
+    class: logging.StreamHandler
+    formatter: verbose
+
+loggers:
+  papermerge.core:
+    level: INFO
+    handlers: [console]
+    propagate: no
+  papermerge.search:
+    level: INFO
+    handlers: [console]
+    propagate: no
+  celery:
+    level: INFO
+    handlers: [console]

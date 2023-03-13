@@ -1,0 +1,5 @@
+[main]
+logging_cfg = "logging.yaml"
+
+[ocr]
+default_language = 'deu'

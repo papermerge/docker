@@ -52,7 +52,7 @@ jobs:
         with:
           push: true
           tags: papermerge/base:latest,papermerge/base:${{ inputs.VERSION }}
-          file: Dockerfile
+          file: base/Dockerfile
           platforms: linux/amd64,linux/arm64
 
       - name: Docker Hub Description
@@ -85,7 +85,7 @@ jobs:
         with:
           push: true
           tags: papermerge/base:latest,papermerge/base:${{ inputs.VERSION }}
-          file: Dockerfile
+          file: base/Dockerfile
 
       - name: Docker Hub Description
         uses: peter-evans/dockerhub-description@v3
