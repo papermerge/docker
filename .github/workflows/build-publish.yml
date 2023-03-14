@@ -26,17 +26,6 @@ on:
         default: false
 
 jobs:
-  extract-output-tag:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Extract output
-        id: get-output-tag
-        run: |
-          output_tag=$(echo ${{github.event.inputs.INPUT_BACKEND_TAG}} | cut -d- -f1)
-          echo $output_tag
-          echo "OUTPUT_TAG=$output_tag" >> $GITHUB_OUTPUT
-      - run: echo "OUTPUT_TAG=${{ steps.get-output-tag.outputs.OUTPUT_TAG }}"
-
   dockerhub:
     name: Build and Publish
     needs: ["extract-output-tag"]
@@ -48,7 +37,6 @@ jobs:
     with:
       INPUT_BACKEND_TAG: ${{ github.event.inputs.INPUT_BACKEND_TAG }}
       INPUT_FRONTEND_TAG: ${{ github.event.inputs.INPUT_FRONTEND_TAG }}
-      OUTPUT_TAG: ${{ needs.extract-ouput-tag.steps.get-output-tag.outputs.OUTPUT_TAG }}
       IS_LATEST: ${{ github.event.inputs.IS_LATEST == 'true' }}
 
   ghcr:
@@ -61,5 +49,4 @@ jobs:
     with:
       INPUT_BACKEND_TAG: ${{ github.event.inputs.INPUT_BACKEND_TAG }}
       INPUT_FRONTEND_TAG: ${{ github.event.inputs.INPUT_FRONTEND_TAG }}
-      OUTPUT_TAG:  ${{ needs.extract-ouput-tag.steps.get-output-tag.outputs.OUTPUT_TAG }}
       IS_LATEST: ${{ github.event.inputs.IS_LATEST == 'true' }}

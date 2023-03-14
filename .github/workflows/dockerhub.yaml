@@ -44,6 +44,13 @@ jobs:
     name: papermerge
     runs-on: ubuntu-latest
     steps:
+      - name: Extract output
+        id: get-output-tag
+        run: |
+          output_tag=$(echo ${{github.event.inputs.INPUT_BACKEND_TAG}} | cut -d- -f1)
+          echo $output_tag
+          echo "OUTPUT_TAG=$output_tag" >> $GITHUB_OUTPUT
+      - run: echo "OUTPUT_TAG=${{ steps.get-output-tag.outputs.OUTPUT_TAG }}"
       - uses: actions/checkout@v3
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -57,11 +64,11 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Papermerge ${{ inputs.OUTPUT_TAG }}
+      - name: Papermerge ${{ steps.get-output-tag.outputs.OUTPUT_TAG }}
         uses: docker/build-push-action@v3.2.0
         with:
           push: true
-          tags: papermerge/papermerge:${{ inputs.OUTPUT_TAG }}
+          tags: papermerge/papermerge:${{ steps.get-output-tag.outputs.OUTPUT_TAG }}
           file: papermerge/Dockerfile
           build-args: frontend_tag=${{inputs.INPUT_FRONTEND_TAG}},backend_tag=${{inputs.INPUT_BACKEND_TAG}}
 
@@ -74,11 +81,11 @@ jobs:
           build-args: frontend_tag=${{inputs.FRONTEND_TAG}},backend_tag=${{inputs.INPUT_BACKEND_TAG}}
         if: ${{ inputs.IS_LATEST == 'true' }}
 
-      - name: Papermerge Bundle inputs.OUTPUT_TAG
+      - name: Papermerge Bundle ${{ steps.get-output-tag.outputs.OUTPUT_TAG }}
         uses: docker/build-push-action@v3.2.0
         with:
           push: true
-          tags: papermerge/papermerge:${{ inputs.OUTPUT_TAG }}-bundle
+          tags: papermerge/papermerge:${{ steps.get-output-tag.outputs.OUTPUT_TAG }}-bundle
           file: bundle/Dockerfile
           build-args: frontend_tag=${{inputs.INTPUT_FRONTEND_TAG}},backend_tag=${{inputs.INPUT_BACKEND_TAG}}
 
