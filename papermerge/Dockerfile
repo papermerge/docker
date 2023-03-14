@@ -1,5 +1,7 @@
 ARG frontend_tag=latest
+ARG backend_tag=latest-headless
 FROM papermerge/papermerge.js:${frontend_tag} as frontend
+ARG frontend_tag=latest
 ARG backend_tag=latest-headless
 FROM papermerge/papermerge:${backend_tag} as build
 
