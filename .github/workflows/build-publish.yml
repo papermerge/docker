@@ -27,11 +27,12 @@ on:
 
 jobs:
   extract-output-tag:
-    - get-output-tag: get-output-tag
-      run: |
-        output_tag=$(echo ${{github.event.inputs.INPUT_BACKEND_TAG}} | cut -d- -f1)
-        echo "::set-output name=output_tag::$output_tag"
-    - run: echo "OUTPUT_TAG=${{steps.get-output-tag.outputs.output_tag}}"
+    steps:
+      - get-output-tag:
+        run: |
+          output_tag=$(echo ${{github.event.inputs.INPUT_BACKEND_TAG}} | cut -d- -f1)
+          echo "::set-output name=output_tag::$output_tag"
+      - run: echo "OUTPUT_TAG=${{steps.get-output-tag.outputs.output_tag}}"
 
   dockerhub:
     name: Build and Publish
