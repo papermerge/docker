@@ -38,13 +38,13 @@ jobs:
       INPUT_FRONTEND_TAG: ${{ github.event.inputs.INPUT_FRONTEND_TAG }}
       IS_LATEST: ${{ github.event.inputs.IS_LATEST == 'true' }}
 
-  ghcr:
-    name: Ghcr
-    if: ${{ github.event.inputs.PUBLISH_ON_GHCR == 'true' }}
-    uses: ./.github/workflows/ghcr.yaml
-    secrets:
-      MY_GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    with:
-      INPUT_BACKEND_TAG: ${{ github.event.inputs.INPUT_BACKEND_TAG }}
-      INPUT_FRONTEND_TAG: ${{ github.event.inputs.INPUT_FRONTEND_TAG }}
-      IS_LATEST: ${{ github.event.inputs.IS_LATEST == 'true' }}
+#  ghcr:
+#    name: Ghcr
+#    if: ${{ github.event.inputs.PUBLISH_ON_GHCR == 'true' }}
+#    uses: ./.github/workflows/ghcr.yaml
+#    secrets:
+#      MY_GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#    with:
+#      INPUT_BACKEND_TAG: ${{ github.event.inputs.INPUT_BACKEND_TAG }}
+#      INPUT_FRONTEND_TAG: ${{ github.event.inputs.INPUT_FRONTEND_TAG }}
+#      IS_LATEST: ${{ github.event.inputs.IS_LATEST == 'true' }}
