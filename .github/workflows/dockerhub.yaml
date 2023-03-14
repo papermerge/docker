@@ -60,7 +60,7 @@ jobs:
           push: true
           tags: papermerge/papermerge:${{ inputs.OUTPUT_TAG }}
           file: papermerge/Dockerfile
-          build-args: frontend_tag=${{inputs.FRONTEND_TAG}},backend_tag=${{inputs.INPUT_FRONTEND_TAG}}
+          build-args: frontend_tag=${{inputs.INPUT_FRONTEND_TAG}},backend_tag=${{inputs.INPUT_BACKEND_TAG}}
 
       - name: Papermerge latest
         uses: docker/build-push-action@v3.2.0
@@ -68,16 +68,16 @@ jobs:
           push: true
           tags: papermerge/papermerge:latest
           file: papermerge/Dockerfile
-          build-args: frontend_tag=${{inputs.FRONTEND_TAG}},backend_tag=${{inputs.INPUT_FRONTEND_TAG}}
-        if: ${{ inputs.IS_LATEST }}
+          build-args: frontend_tag=${{inputs.FRONTEND_TAG}},backend_tag=${{inputs.INPUT_BACKEND_TAG}}
+        if: ${{ inputs.IS_LATEST == 'true' }}
 
       - name: Papermerge Bundle inputs.OUTPUT_TAG
         uses: docker/build-push-action@v3.2.0
         with:
           push: true
-          tags: papermerge/papermerge:latest-bundle,papermerge/papermerge:${{ inputs.OUTPUT_BACKEND_TAG }}-bundle
+          tags: papermerge/papermerge:${{ inputs.OUTPUT_TAG }}-bundle
           file: bundle/Dockerfile
-          build-args: frontend_tag=${{inputs.FRONTEND_TAG}},backend_tag=${{inputs.INPUT_FRONTEND_TAG}}
+          build-args: frontend_tag=${{inputs.INTPUT_FRONTEND_TAG}},backend_tag=${{inputs.INPUT_BACKEND_TAG}}
 
       - name: Papermerge Bundle Latest
         uses: docker/build-push-action@v3.2.0
@@ -85,8 +85,8 @@ jobs:
           push: true
           tags: papermerge/papermerge:latest-bundle
           file: bundle/Dockerfile
-          build-args: frontend_tag=${{inputs.FRONTEND_TAG}},backend_tag=${{inputs.INPUT_FRONTEND_TAG}}
-        if: ${{ inputs.IS_LATEST }}
+          build-args: frontend_tag=${{inputs.INPUT_FRONTEND_TAG}},backend_tag=${{inputs.INPUT_BACKEND_TAG}}
+        if: ${{ inputs.IS_LATEST == 'true' }}
 
       - name: Docker Hub Description
         uses: peter-evans/dockerhub-description@v3

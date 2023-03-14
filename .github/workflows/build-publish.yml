@@ -11,9 +11,6 @@ on:
         required: true
         type: string
         default: latest
-      OUTPUT_TAG:
-        required: true
-        type: string
       IS_LATEST:
         type: boolean
         default: false
@@ -29,9 +26,16 @@ on:
         default: false
 
 jobs:
+  extract-output-tag:
+    - get-output-tag: get-output-tag
+      run: |
+        output_tag=$(echo ${{github.event.inputs.INPUT_BACKEND_TAG}} | cut -d- -f1)
+        echo "::set-output name=output_tag::$output_tag"
+    - run: echo "OUTPUT_TAG=${{steps.get-output-tag.outputs.output_tag}}"
 
   dockerhub:
     name: Build and Publish
+    needs: ["extract-output-tag"]
     if: ${{ github.event.inputs.PUBLISH_ON_DOCKERHUB == 'true' }}
     uses: ./.github/workflows/dockerhub.yaml
     secrets:
@@ -40,11 +44,12 @@ jobs:
     with:
       INPUT_BACKEND_TAG: ${{ github.event.inputs.INPUT_BACKEND_TAG }}
       INPUT_FRONTEND_TAG: ${{ github.event.inputs.INPUT_FRONTEND_TAG }}
-      OUTPUT_TAG: ${{ github.event.inputs.OUTPUT_TAG }}
+      OUTPUT_TAG: ${{ needs.extract-output-tag.outputs.output_tag }}
       IS_LATEST: ${{ github.event.inputs.IS_LATEST == 'true' }}
 
   ghcr:
     name: Ghcr
+    needs: ["extract-output-tag"]
     if: ${{ github.event.inputs.PUBLISH_ON_GHCR == 'true' }}
     uses: ./.github/workflows/ghcr.yaml
     secrets:
@@ -52,5 +57,5 @@ jobs:
     with:
       INPUT_BACKEND_TAG: ${{ github.event.inputs.INPUT_BACKEND_TAG }}
       INPUT_FRONTEND_TAG: ${{ github.event.inputs.INPUT_FRONTEND_TAG }}
-      OUTPUT_TAG: ${{ github.event.inputs.OUTPUT_TAG }}
+      OUTPUT_TAG:  ${{ needs.extract-output-tag.outputs.output_tag }}
       IS_LATEST: ${{ github.event.inputs.IS_LATEST == 'true' }}
