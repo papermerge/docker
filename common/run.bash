@@ -71,7 +71,6 @@ exec_init() {
   exec_collectstatic
   exec_migrate
   exec_createsuperuser
-  exec_update_index
 }
 
 case $CMD in
