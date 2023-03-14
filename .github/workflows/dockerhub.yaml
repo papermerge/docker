@@ -86,7 +86,7 @@ jobs:
           tags: papermerge/papermerge:${{ steps.get-output-tag.outputs.OUTPUT_TAG }}-bundle
           file: bundle/Dockerfile
           build-args: |
-            frontend_tag=${{github.event.inputs.INTPUT_FRONTEND_TAG}}
+            frontend_tag=${{github.event.inputs.INPUT_FRONTEND_TAG}}
             backend_tag=${{github.event.inputs.INPUT_BACKEND_TAG}}
 
       - name: Papermerge Bundle Latest
