@@ -3,14 +3,17 @@ name: Dockerhub
 on:
   workflow_dispatch:
     inputs:
-      VERSION:
+      BACKEND_TAG:
         required: true
         type: string
-      INCLUDE_ARM64_PLATFORM:
-        description: 'Also build for arm64 (DockerHub only)'
-        type: boolean
+        default: latest-headless
+      FRONTEND_TAG:
         required: true
-        default: true
+        type: string
+        default: latest
+      IS_LATEST:
+        type: string
+        default: false
   workflow_call:
     secrets:
       DOCKERHUB_USERNAME:
@@ -18,54 +21,25 @@ on:
       DOCKERHUB_TOKEN:
         required: true
     inputs:
-      VERSION:
+      INPUT_BACKEND_TAG:
         required: true
         type: string
-      INCLUDE_ARM64_PLATFORM:
-        description: 'Also build for arm64 (DockerHub only)'
-        type: boolean
+        default: latest-headless
+      INPUT_FRONTEND_TAG:
         required: true
-        default: true
+        type: string
+        default: latest
+      OUTPUT_TAG:
+        required: true
+        type: string
+      IS_LATEST:
+        type: string
+        default: false
 
 jobs:
-  arm64-amd64:
-    name: arm64/amd64
+  build-and-publish:
+    name: papermerge
     runs-on: ubuntu-latest
-    if: ${{ inputs.INCLUDE_ARM64_PLATFORM }}
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Login to DockerHub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Build
-        uses: docker/build-push-action@v3.2.0
-        with:
-          push: true
-          tags: papermerge/base:latest,papermerge/base:${{ inputs.VERSION }}
-          file: base/Dockerfile
-          platforms: linux/amd64,linux/arm64
-
-      - name: Docker Hub Description
-        uses: peter-evans/dockerhub-description@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-          repository: papermerge/base
-
-  amd64:
-    name: amd64
-    runs-on: ubuntu-latest
-    if: ${{ !inputs.INCLUDE_ARM64_PLATFORM }}
     steps:
       - uses: actions/checkout@v3
       - name: Set up QEMU
@@ -80,16 +54,43 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build
+      - name: Papermerge ${{ inputs.OUTPUT_TAG }}
         uses: docker/build-push-action@v3.2.0
         with:
           push: true
-          tags: papermerge/base:latest,papermerge/base:${{ inputs.VERSION }}
-          file: base/Dockerfile
+          tags: papermerge/papermerge:${{ inputs.OUTPUT_TAG }}
+          file: papermerge/Dockerfile
+          build-args: frontend_tag=${{inputs.FRONTEND_TAG}},backend_tag=${{inputs.INPUT_FRONTEND_TAG}}
+
+      - name: Papermerge latest
+        uses: docker/build-push-action@v3.2.0
+        with:
+          push: true
+          tags: papermerge/papermerge:latest
+          file: papermerge/Dockerfile
+          build-args: frontend_tag=${{inputs.FRONTEND_TAG}},backend_tag=${{inputs.INPUT_FRONTEND_TAG}}
+        if: ${{ inputs.IS_LATEST }}
+
+      - name: Papermerge Bundle inputs.OUTPUT_TAG
+        uses: docker/build-push-action@v3.2.0
+        with:
+          push: true
+          tags: papermerge/papermerge:latest-bundle,papermerge/papermerge:${{ inputs.OUTPUT_BACKEND_TAG }}-bundle
+          file: bundle/Dockerfile
+          build-args: frontend_tag=${{inputs.FRONTEND_TAG}},backend_tag=${{inputs.INPUT_FRONTEND_TAG}}
+
+      - name: Papermerge Bundle Latest
+        uses: docker/build-push-action@v3.2.0
+        with:
+          push: true
+          tags: papermerge/papermerge:latest-bundle
+          file: bundle/Dockerfile
+          build-args: frontend_tag=${{inputs.FRONTEND_TAG}},backend_tag=${{inputs.INPUT_FRONTEND_TAG}}
+        if: ${{ inputs.IS_LATEST }}
 
       - name: Docker Hub Description
         uses: peter-evans/dockerhub-description@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-          repository: papermerge/base
+          repository: papermerge/papermerge

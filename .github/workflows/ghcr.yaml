@@ -3,18 +3,39 @@ name: ghcr.io
 on:
   workflow_dispatch:
     inputs:
-      VERSION:
+      INPUT_BACKEND_TAG:
         required: true
         type: string
+        default: latest-headless
+      INPUT_FRONTEND_TAG:
+        required: true
+        type: string
+        default: latest
+      OUTPUT_TAG:
+        required: true
+        type: string
+      IS_LATEST:
+        type: string
+        default: false
   workflow_call:
     secrets:
       MY_GH_TOKEN:
         required: true
     inputs:
-      VERSION:
+      INPUT_BACKEND_TAG:
         required: true
         type: string
-
+        default: latest-headless
+      INPUT_FRONTEND_TAG:
+        required: true
+        type: string
+        default: latest
+      OUTPUT_TAG:
+        required: true
+        type: string
+      IS_LATEST:
+        type: string
+        default: false
 jobs:
   amb64:
     name: Publish to ghcr.io
@@ -28,9 +49,37 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.MY_GH_TOKEN }}
-      - name: Build and push
-        uses: docker/build-push-action@v3
+
+      - name: Papermerge ${{ inputs.OUTPUT_TAG }}
+        uses: docker/build-push-action@v3.2.0
         with:
           push: true
-          tags: papermerge/base:${{ inputs.VERSION }},papermerge/base:latest
-          file: Dockerfile
+          tags: papermerge/papermerge:${{ inputs.OUTPUT_TAG }}
+          file: papermerge/Dockerfile
+          build-args: frontend_tag=${{inputs.FRONTEND_TAG}},backend_tag=${{inputs.INPUT_FRONTEND_TAG}}
+
+      - name: Papermerge latest
+        uses: docker/build-push-action@v3.2.0
+        with:
+          push: true
+          tags: papermerge/papermerge:latest
+          file: papermerge/Dockerfile
+          build-args: frontend_tag=${{inputs.FRONTEND_TAG}},backend_tag=${{inputs.INPUT_FRONTEND_TAG}}
+        if: ${{ inputs.IS_LATEST }}
+
+      - name: Papermerge Bundle inputs.OUTPUT_TAG
+        uses: docker/build-push-action@v3.2.0
+        with:
+          push: true
+          tags: papermerge/papermerge:latest-bundle,papermerge/papermerge:${{ inputs.OUTPUT_BACKEND_TAG }}-bundle
+          file: bundle/Dockerfile
+          build-args: frontend_tag=${{inputs.FRONTEND_TAG}},backend_tag=${{inputs.INPUT_FRONTEND_TAG}}
+
+      - name: Papermerge Bundle Latest
+        uses: docker/build-push-action@v3.2.0
+        with:
+          push: true
+          tags: papermerge/papermerge:latest-bundle
+          file: bundle/Dockerfile
+          build-args: frontend_tag=${{inputs.FRONTEND_TAG}},backend_tag=${{inputs.INPUT_FRONTEND_TAG}}
+        if: ${{ inputs.IS_LATEST }}

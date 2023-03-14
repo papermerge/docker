@@ -3,16 +3,22 @@ name: Build & Publish
 on:
   workflow_dispatch:
     inputs:
-      VERSION:
+      INPUT_BACKEND_TAG:
         required: true
         type: string
+        default: latest-headless
+      INPUT_FRONTEND_TAG:
+        required: true
+        type: string
+        default: latest
+      OUTPUT_TAG:
+        required: true
+        type: string
+      IS_LATEST:
+        type: string
+        default: false
       PUBLISH_ON_DOCKERHUB:
         description: 'Pubilsh on DockeHub'
-        type: boolean
-        required: true
-        default: true
-      INCLUDE_ARM64_PLATFORM:
-        description: 'Also build for arm64 (DockerHub only)'
         type: boolean
         required: true
         default: true
@@ -32,8 +38,10 @@ jobs:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
     with:
-      VERSION: ${{ github.event.inputs.VERSION }}
-      INCLUDE_ARM64_PLATFORM: ${{ github.event.inputs.INCLUDE_ARM64_PLATFORM == 'true' }}
+      INPUT_BACKEND_TAG: ${{ github.event.inputs.INPUT_BACKEND_TAG }}
+      INPUT_FRONTEND_TAG: ${{ github.event.inputs.INPUT_FRONTEND_TAG }}
+      OUTPUT_TAG: ${{ github.event.inputs.OUTPUT_TAG }}
+      IS_LATEST: ${{ github.event.input.IS_LATEST }
 
   ghcr:
     name: Ghcr
@@ -42,4 +50,7 @@ jobs:
     secrets:
       MY_GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     with:
-      VERSION: ${{ github.event.inputs.VERSION }}
+      INPUT_BACKEND_TAG: ${{ github.event.inputs.INPUT_BACKEND_TAG }}
+      INPUT_FRONTEND_TAG: ${{ github.event.inputs.INPUT_FRONTEND_TAG }}
+      OUTPUT_TAG: ${{ github.event.inputs.OUTPUT_TAG }}
+      IS_LATEST: ${{ github.event.input.IS_LATEST }
