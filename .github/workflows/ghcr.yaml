@@ -42,6 +42,7 @@ jobs:
           output_tag=$(echo ${{github.event.inputs.INPUT_BACKEND_TAG}} | cut -d- -f1)
           echo $output_tag
           echo "OUTPUT_TAG=$output_tag" >> $GITHUB_OUTPUT
+      - run: echo "OUTPUT_TAG=${{ steps.get-output-tag.outputs.OUTPUT_TAG }}"
       - name: Checkout repository
         uses: actions/checkout@v3
       - name: Log in to the Container registry
