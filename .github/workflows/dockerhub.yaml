@@ -12,7 +12,7 @@ on:
         type: string
         default: latest
       IS_LATEST:
-        type: string
+        type: boolean
         default: false
   workflow_call:
     secrets:
@@ -33,7 +33,7 @@ on:
         required: true
         type: string
       IS_LATEST:
-        type: string
+        type: boolean
         default: false
 
 jobs:
