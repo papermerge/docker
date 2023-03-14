@@ -28,9 +28,11 @@ on:
 jobs:
   extract-output-tag:
     runs-on: ubuntu-latest
+    id: get-output-tag
+    outputs:
+      output_tag: ''
     steps:
-      - get-output-tag:
-        run: |
+      - run: |
           output_tag=$(echo ${{github.event.inputs.INPUT_BACKEND_TAG}} | cut -d- -f1)
           echo "::set-output name=output_tag::$output_tag"
       - run: echo "OUTPUT_TAG=${{steps.get-output-tag.outputs.output_tag}}"
