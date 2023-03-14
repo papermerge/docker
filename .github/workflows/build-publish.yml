@@ -41,7 +41,7 @@ jobs:
       INPUT_BACKEND_TAG: ${{ github.event.inputs.INPUT_BACKEND_TAG }}
       INPUT_FRONTEND_TAG: ${{ github.event.inputs.INPUT_FRONTEND_TAG }}
       OUTPUT_TAG: ${{ github.event.inputs.OUTPUT_TAG }}
-      IS_LATEST: ${{ github.event.input.IS_LATEST }}
+      IS_LATEST: ${{ github.event.inputs.IS_LATEST }}
 
   ghcr:
     name: Ghcr
@@ -53,4 +53,4 @@ jobs:
       INPUT_BACKEND_TAG: ${{ github.event.inputs.INPUT_BACKEND_TAG }}
       INPUT_FRONTEND_TAG: ${{ github.event.inputs.INPUT_FRONTEND_TAG }}
       OUTPUT_TAG: ${{ github.event.inputs.OUTPUT_TAG }}
-      IS_LATEST: ${{ github.event.input.IS_LATEST }}
+      IS_LATEST: ${{ github.event.inputs.IS_LATEST }}
