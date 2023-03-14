@@ -25,6 +25,9 @@ on:
         required: true
         default: false
 
+env:
+  output_tag: ''
+
 jobs:
   extract-output-tag:
     runs-on: ubuntu-latest
