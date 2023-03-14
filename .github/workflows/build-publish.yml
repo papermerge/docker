@@ -28,7 +28,6 @@ on:
 jobs:
   dockerhub:
     name: Build and Publish
-    needs: ["extract-output-tag"]
     if: ${{ github.event.inputs.PUBLISH_ON_DOCKERHUB == 'true' }}
     uses: ./.github/workflows/dockerhub.yaml
     secrets:
@@ -41,7 +40,6 @@ jobs:
 
   ghcr:
     name: Ghcr
-    needs: ["extract-output-tag"]
     if: ${{ github.event.inputs.PUBLISH_ON_GHCR == 'true' }}
     uses: ./.github/workflows/ghcr.yaml
     secrets:
