@@ -27,6 +27,7 @@ on:
 
 jobs:
   extract-output-tag:
+    runs-on: ubuntu-latest
     steps:
       - get-output-tag:
         run: |

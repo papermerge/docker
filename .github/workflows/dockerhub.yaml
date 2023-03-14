@@ -3,14 +3,17 @@ name: Dockerhub
 on:
   workflow_dispatch:
     inputs:
-      BACKEND_TAG:
+      INPUT_BACKEND_TAG:
         required: true
         type: string
         default: latest-headless
-      FRONTEND_TAG:
+      INPUT_FRONTEND_TAG:
         required: true
         type: string
         default: latest
+      OUTPUT_TAG:
+        required: true
+        type: string
       IS_LATEST:
         type: boolean
         default: false
