@@ -13,12 +13,14 @@ COPY common/run.bash /run.bash
 COPY common/nginx.conf /etc/nginx/
 COPY common/papermerge.toml ./papermerge.toml
 COPY common/logging.yaml ./logging.yaml
+COPY common/redis.conf /etc/redis/redis.conf
 
 COPY papermerge/supervisord.conf /etc/
 
 RUN chmod +x /run.bash
 
 COPY --from=frontend /usr/share/nginx/html /usr/share/nginx/html
+
 
 RUN useradd --no-create-home nginx
 RUN rm /etc/nginx/sites-enabled/default

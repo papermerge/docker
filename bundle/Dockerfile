@@ -13,6 +13,7 @@ COPY common/run.bash /run.bash
 COPY common/nginx.conf /etc/nginx/
 COPY common/papermerge.toml ./papermerge.toml
 COPY common/logging.yaml ./logging.yaml
+COPY common/redis.conf /etc/redis/redis.conf
 
 COPY bundle/supervisord.conf /etc/
 
