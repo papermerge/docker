@@ -27,10 +27,10 @@ on:
         required: true
         type: string
         default: latest
-        type: string
       IS_LATEST:
         type: boolean
         default: false
+
 jobs:
   build-and-publish:
     name: Publish to ghcr.io
