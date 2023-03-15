@@ -5,7 +5,7 @@ ARG frontend_tag=latest
 ARG backend_tag=latest-headless
 FROM papermerge/papermerge:${backend_tag} as build
 
-RUN apt-get install -y --no-install-recommends nginx supervisor
+RUN apt-get install -y --no-install-recommends nginx supervisor redis-server
 
 COPY common/uwsgi.ini /etc/uwsgi/papermerge.ini
 COPY common/run.bash /run.bash

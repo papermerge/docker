@@ -45,7 +45,7 @@ exec_migrate() {
 
 exec_update_index() {
   # Create/Update search index
-  $MANAGE update_index
+  $MANAGE update_index &
 }
 
 exec_createsuperuser() {
@@ -71,6 +71,7 @@ exec_init() {
   exec_collectstatic
   exec_migrate
   exec_createsuperuser
+  exec_update_index
 }
 
 case $CMD in
