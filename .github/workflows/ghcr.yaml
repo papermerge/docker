@@ -32,7 +32,7 @@ on:
         type: boolean
         default: false
 jobs:
-  amb64:
+  build-and-publish:
     name: Publish to ghcr.io
     runs-on: ubuntu-latest
     steps:
@@ -58,7 +58,9 @@ jobs:
           push: true
           tags: papermerge/papermerge:${{ steps.get-output-tag.outputs.OUTPUT_TAG }}
           file: papermerge/Dockerfile
-          build-args: frontend_tag=${{inputs.INPUT_FRONTEND_TAG}},backend_tag=${{inputs.INPUT_BACKEND_TAG}}
+          build-args: |
+            frontend_tag=${{github.event.inputs.INPUT_FRONTEND_TAG}}
+            backend_tag=${{github.event.inputs.INPUT_BACKEND_TAG}}
 
       - name: Papermerge latest
         uses: docker/build-push-action@v3.2.0
@@ -66,22 +68,7 @@ jobs:
           push: true
           tags: papermerge/papermerge:latest
           file: papermerge/Dockerfile
-          build-args: frontend_tag=${{inputs.INPUT_FRONTEND_TAG}},backend_tag=${{inputs.INPUT_BACKEND_TAG}}
-        if: ${{ inputs.IS_LATEST == 'true' }}
-
-      - name: Papermerge Bundle ${{ steps.get-output-tag.outputs.OUTPUT_TAG }}
-        uses: docker/build-push-action@v3.2.0
-        with:
-          push: true
-          tags: papermerge/papermerge:${{ steps.get-output-tag.outputs.OUTPUT_TAG }}-bundle
-          file: bundle/Dockerfile
-          build-args: frontend_tag=${{inputs.INPUT_FRONTEND_TAG}},backend_tag=${{inputs.INPUT_BACKEND_TAG}}
-
-      - name: Papermerge Bundle Latest
-        uses: docker/build-push-action@v3.2.0
-        with:
-          push: true
-          tags: papermerge/papermerge:latest-bundle
-          file: bundle/Dockerfile
-          build-args: frontend_tag=${{inputs.INPUT_FRONTEND_TAG}},backend_tag=${{inputs.INPUT_BACKEND_TAG}}
+          build-args: |
+            frontend_tag=${{github.event.inputs.INPUT_FRONTEND_TAG}}
+            backend_tag=${{github.event.inputs.INPUT_BACKEND_TAG}}
         if: ${{ inputs.IS_LATEST == 'true' }}

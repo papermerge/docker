@@ -78,31 +78,3 @@ jobs:
             frontend_tag=${{github.event.inputs.FRONTEND_TAG}}
             backend_tag=${{github.event.inputs.INPUT_BACKEND_TAG}}
         if: ${{ inputs.IS_LATEST == 'true' }}
-
-      - name: Papermerge Bundle ${{ steps.get-output-tag.outputs.OUTPUT_TAG }}
-        uses: docker/build-push-action@v3.2.0
-        with:
-          push: true
-          tags: papermerge/papermerge:${{ steps.get-output-tag.outputs.OUTPUT_TAG }}-bundle
-          file: bundle/Dockerfile
-          build-args: |
-            frontend_tag=${{github.event.inputs.INPUT_FRONTEND_TAG}}
-            backend_tag=${{github.event.inputs.INPUT_BACKEND_TAG}}
-
-      - name: Papermerge Bundle Latest
-        uses: docker/build-push-action@v3.2.0
-        with:
-          push: true
-          tags: papermerge/papermerge:latest-bundle
-          file: bundle/Dockerfile
-          build-args: |
-            frontend_tag=${{github.event.inputs.INPUT_FRONTEND_TAG}}
-            backend_tag=${{github.event.inputs.INPUT_BACKEND_TAG}}
-        if: ${{ inputs.IS_LATEST == 'true' }}
-
-      - name: Docker Hub Description
-        uses: peter-evans/dockerhub-description@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-          repository: papermerge/papermerge

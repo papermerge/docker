@@ -7,14 +7,12 @@ FROM papermerge/papermerge:${backend_tag} as build
 
 RUN apt-get install -y --no-install-recommends nginx supervisor redis-server
 
-COPY common/uwsgi.ini /etc/uwsgi/papermerge.ini
-COPY common/run.bash /run.bash
-
-COPY common/nginx.conf /etc/nginx/
-COPY common/papermerge.toml ./papermerge.toml
-COPY common/logging.yaml ./logging.yaml
-COPY common/redis.conf /etc/redis/redis.conf
-
+COPY papermerge/uwsgi.ini /etc/uwsgi/papermerge.ini
+COPY papermerge/run.bash /run.bash
+COPY papermerge/nginx.conf /etc/nginx/
+COPY papermerge/papermerge.toml ./papermerge.toml
+COPY papermerge/logging.yaml ./logging.yaml
+COPY papermerge/redis.conf /etc/redis/redis.conf
 COPY papermerge/supervisord.conf /etc/
 
 RUN chmod +x /run.bash
