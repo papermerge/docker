@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="335.47839mm"
-   height="201.33054mm"
-   viewBox="0 0 335.47839 201.33054"
+   width="335.23212mm"
+   height="198.24323mm"
+   viewBox="0 0 335.23211 198.24323"
    version="1.1"
    id="svg5"
    inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
@@ -23,9 +23,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="0.34832351"
-     inkscape:cx="614.37139"
-     inkscape:cy="546.90537"
+     inkscape:zoom="0.69664703"
+     inkscape:cx="621.54862"
+     inkscape:cy="676.81334"
      inkscape:window-width="1856"
      inkscape:window-height="1016"
      inkscape:window-x="0"
@@ -86,12 +86,12 @@
      inkscape:label="background"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-0.56875479,-15.4327)">
+     transform="translate(-0.81502831,-15.4327)">
     <rect
        style="fill:#f9f9f9;fill-rule:evenodd;stroke:#e6e6e6;stroke-width:1.165;stroke-linecap:round;stroke-linejoin:round;stop-color:#000000"
        id="rect1955"
        width="334.06711"
-       height="200.16554"
+       height="197.07823"
        x="1.3975283"
        y="16.0152" />
   </g>
@@ -99,7 +99,7 @@
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="image"
-     transform="translate(-0.56875479,-15.4327)">
+     transform="translate(-0.81502831,-15.4327)">
     <text
        xml:space="preserve"
        style="font-size:6.35px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
