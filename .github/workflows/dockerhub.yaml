@@ -77,4 +77,4 @@ jobs:
           build-args: |
             frontend_tag=${{github.event.inputs.FRONTEND_TAG}}
             backend_tag=${{github.event.inputs.INPUT_BACKEND_TAG}}
-        if: ${{ inputs.IS_LATEST == 'true' }}
+        if: ${{ inputs.IS_LATEST }}
