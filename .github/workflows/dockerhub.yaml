@@ -75,6 +75,6 @@ jobs:
           tags: papermerge/papermerge:latest
           file: papermerge/Dockerfile
           build-args: |
-            frontend_tag=${{github.event.inputs.FRONTEND_TAG}}
+            frontend_tag=${{github.event.inputs.INPUT_FRONTEND_TAG}}
             backend_tag=${{github.event.inputs.INPUT_BACKEND_TAG}}
         if: ${{ inputs.IS_LATEST }}
