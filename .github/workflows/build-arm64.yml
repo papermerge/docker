@@ -1,0 +1,62 @@
+name: Build ARM64 docker image
+
+on:
+  workflow_dispatch:
+    inputs:
+      INPUT_BACKEND_TAG:
+        type: string
+        required: true
+      INPUT_FRONTEND_TAG:
+        type: string
+        required: true
+        default: latest
+  workflow_call:
+    secrets:
+      DOCKERHUB_USERNAME:
+        required: true
+      DOCKERHUB_TOKEN:
+        required: true
+    inputs:
+      INPUT_BACKEND_TAG:
+        type: string
+        required: true
+      INPUT_FRONTEND_TAG:
+        type: string
+        required: true
+        default: latest
+
+jobs:
+  build-arm64:
+    name: papermerge arm64
+    runs-on: ubuntu-latest
+    steps:
+      - name: Extract output
+        id: get-output-tag
+        run: |
+          output_tag=$(echo ${{github.event.inputs.INPUT_BACKEND_TAG}} | cut -d- -f1)
+          echo $output_tag
+          echo "OUTPUT_TAG=$output_tag" >> $GITHUB_OUTPUT
+      - run: echo "OUTPUT_TAG=${{ steps.get-output-tag.outputs.OUTPUT_TAG }}"
+      - uses: actions/checkout@v3
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Papermerge ARM64 ${{ steps.get-output-tag.outputs.OUTPUT_TAG }}
+        uses: docker/build-push-action@v3.2.0
+        with:
+          push: true
+          tags: papermerge/papermerge:${{ steps.get-output-tag.outputs.OUTPUT_TAG }}
+          platforms: linux/arm64
+          file: papermerge/Dockerfile
+          build-args: |
+            frontend_tag=${{github.event.inputs.INPUT_FRONTEND_TAG}}
+            backend_tag=${{github.event.inputs.INPUT_BACKEND_TAG}}
