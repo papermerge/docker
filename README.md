@@ -2,8 +2,8 @@
 
 This repository builds folloging docker images:
 
-	1. [papermerge/base](https://hub.docker.com/r/papermerge/base)
-	2. [papermerge/papermerge](https://hub.docker.com/r/papermerge/papermerge)
+* [papermerge/base](https://hub.docker.com/r/papermerge/base)
+* [papermerge/papermerge](https://hub.docker.com/r/papermerge/papermerge)
 
 ## Papermerge/base Docker Image
 
